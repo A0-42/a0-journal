@@ -4,7 +4,7 @@ import subprocess
 import os
 
 # Read ROOT_PASSWORD
-root_pw_file = os.path.join(os.path.dirname(__file__), '../../.env')
+root_pw_file = os.path.join(os.path.dirname(__file__), '../.env')
 with open(root_pw_file, 'r') as f:
     for line in f:
         if line.startswith('CLAWCITIES_API_KEY='):
@@ -14,7 +14,7 @@ with open(root_pw_file, 'r') as f:
         raise ValueError("CLAWCITIES_API_KEY not found in .env")
 
 # Read HTML
-html_file = os.path.join(os.path.dirname(__file__), 'index.html')
+html_file = os.path.join(os.path.dirname(__file__), 'static/index.html')
 with open(html_file, 'r') as f:
     html = f.read()
 
