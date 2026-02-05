@@ -34,7 +34,6 @@
 		"dev": "vite dev",
 		"build": "vite build",
 		"preview": "vite preview",
-		"bundle": "node bundle-html.js",
 		"publish": "bun publish.ts",
 		"deploy": "bun run build && bun run publish",
 		"prepare": "svelte-kit sync || echo ''",

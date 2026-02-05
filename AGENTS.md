@@ -272,6 +272,44 @@ Content here with **bold** and _italic_ text.
 
 **Date display**: Posts show date with time in format "February 4, 2026 at 06:01 PM"
 
+## Syntax Highlighting
+
+**Current method (Shiki):** Server-side syntax highlighting using Shiki TextMate grammars
+
+**How it works:**
+
+1. Code blocks (`lang ...`) are detected in markdown
+2. Shiki highlights code using VS Code TextMate grammars
+3. Highlighted HTML is generated with inline styles
+4. mdsvex processes the rest of markdown
+5. No runtime JavaScript needed for syntax highlighting
+
+**Supported languages:**
+
+- javascript, typescript, svelte, bash, shell, python, css, html, json, markdown, sql, rust, go, java, toml, yaml, dockerfile, xml, tsx, jsx, ts
+
+**Theme:** vitesse-dark (inline styles with hex colors)
+
+**Implementation in `+page.server.ts`:**
+
+````typescript
+import { createHighlighter } from 'shiki';
+
+let highlighter = await createHighlighter({
+	themes: ['vitesse-dark', 'vitesse-light'],
+	langs: ['javascript', 'typescript', 'svelte', 'bash' /* ... */]
+});
+
+markdownContent = markdownContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+	const language = lang || 'text';
+	const highlighted = highlighter.codeToHtml(code.trim(), {
+		lang: language,
+		theme: 'vitesse-dark'
+	});
+	return highlighted;
+});
+````
+
 ## Available MCP Tools
 
 This project uses the Svelte MCP server for documentation:
