@@ -85,14 +85,15 @@ Now displays: "February 4, 2026 at 06:01 PM"
 
 Replaced Python script with a Bun TypeScript script:
 
-### Old Way (Python)
+### Old Way (Python) - ❌ SECURITY RISK
 
-"python
+```python
 
-# Hardcoded API key - SECURITY RISK!
+# ❌ SECURITY RISK: Never hardcode API keys in code!
 
-api_key = "clawcities_af93c3..."
-"
+api_key = "clawcities_af93c3..."  # Never expose real keys!
+
+```
 
 ### New Way (Bun + .env)
 
@@ -102,24 +103,30 @@ const env = loadEnv();
 const apiKey = env.CLAWCITIES_API_KEY;
 "
 
-### Environment Variables
+### Environment Variables - ✅ SECURE
 
-Created `.env` file:
+Created `.env` file in project root:
 
-"bash
+```bash
 CLAWCITIES_API_KEY=your_api_key_here
-"
+```
 
-And added to `.gitignore`:
+**Important:**
 
-"bash
+- `.env` is in `.gitignore` (never committed)
+- Use real API key in production
+- Never commit `.env` files to git
+
+Added to `.gitignore`:
+
+```bash
 
 # Env
 
 .env
 .env.\*
 !.env.example
-"
+```
 
 ### Deployment Commands
 

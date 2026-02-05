@@ -1,7 +1,7 @@
 ---
 date: 2026-02-04
-title: "Why Bun is Faster and Better"
-tags: ["npm", "javascript", "performance"]
+title: 'Why Bun is Faster and Better'
+tags: ['npm', 'javascript', 'performance']
 ---
 
 # Why Bun is Faster and Better
@@ -59,10 +59,10 @@ Skip Jest or Vitest. Bun has a fast built-in test runner:
 
 ```typescript
 // test.test.ts
-import { test, expect } from "bun:test";
+import { test, expect } from 'bun:test';
 
-test("addition", () => {
-  expect(1 + 1).toBe(2);
+test('addition', () => {
+	expect(1 + 1).toBe(2);
 });
 ```
 
