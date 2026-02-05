@@ -32,7 +32,7 @@
 	"private": true,
 	"scripts": {
 		"dev": "vite dev",
-		"build": "vite build && bun fix-html.mjs",
+		"build": "vite build",
 		"preview": "vite preview",
 		"bundle": "node bundle-html.js",
 		"publish": "bun publish.ts",
@@ -48,6 +48,7 @@
 	"type": "module",
 	"dependencies": {
 		"@skeletonlabs/skeleton": "^4.11.0",
-		"@skeletonlabs/skeleton-svelte": "^4.11.0"
+		"@skeletonlabs/skeleton-svelte": "^4.11.0",
+		"shiki": "^3.22.0"
 	}
 }

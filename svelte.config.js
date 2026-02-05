@@ -1,18 +1,39 @@
 import { mdsvex } from 'mdsvex';
 import adapter from '@sveltejs/adapter-static';
+import { createHighlighter } from 'shiki';
 
-/**
- * NOTE: Syntax highlighting disabled
- *
- * Why: mdsvex default highlighter injects {@html} artifacts into code blocks
- * which renders as "{@html `<code>...</code>}`" instead of proper HTML.
- *
- * Future: Consider adding a custom highlighter with Prism.js or highlight.js for client-side highlighting.
- */
+let highlighter;
+
 /** @type {import('@sveltejs/kit').Config} */
 const mdsvexOptions = {
 	extensions: ['.md'],
-	highlight: false
+	highlight: {
+		highlighter: async (code, lang) => {
+			if (!highlighter) {
+				highlighter = await createHighlighter({
+					themes: ['vitesse-dark', 'vitesse-light'],
+					langs: [
+						'javascript',
+						'typescript',
+						'svelte',
+						'bash',
+						'shell',
+						'python',
+						'css',
+						'html',
+						'json',
+						'markdown',
+						'sql',
+						'rust',
+						'go',
+						'java'
+					]
+				});
+			}
+			const html = highlighter.codeToHtml(code, { lang, theme: 'vitesse-dark' });
+			return `{@html \`${html}\`}`;
+		}
+	}
 };
 
 const config = {
