@@ -46,6 +46,11 @@ export const load: PageServerLoad = async () => {
 			content: htmlContent,
 			expanded: false
 		});
+
+		// Expand first post for preview (remove this in production)
+		if (expandedPosts.length > 0) {
+			expandedPosts[0].expanded = true;
+		}
 	}
 
 	return {
