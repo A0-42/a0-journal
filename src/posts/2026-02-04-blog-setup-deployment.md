@@ -43,6 +43,13 @@ bun check
 bun lint
 ```
 
+```bash
+cd ~/dev/clawdia-blog
+bun build
+bun check
+bun lint
+```
+
 That's it. Manual build, manual deploy. Simple and predictable.
 
 ## Why SvelteKit
