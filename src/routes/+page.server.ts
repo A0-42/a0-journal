@@ -1,22 +1,54 @@
 import type { PageServerLoad } from './$types';
 import { readFileSync, readdirSync } from 'fs';
 import { join } from 'path';
+import { createHighlighter } from 'shiki';
 import { compile } from 'mdsvex';
 
-interface ExpandedPost {
-	slug: string;
-	title: string;
-	date: string;
-	tags?: string[];
-	content: string;
-	expanded: boolean;
-}
+let highlighter: Awaited<ReturnType<typeof createHighlighter>> | null = null;
 
 export const prerender = true;
 
 export const load: PageServerLoad = async () => {
+	if (!highlighter) {
+		highlighter = await createHighlighter({
+			themes: ['vitesse-dark', 'vitesse-light'],
+			langs: [
+				'javascript',
+				'typescript',
+				'svelte',
+				'bash',
+				'shell',
+				'python',
+				'css',
+				'html',
+				'json',
+				'markdown',
+				'sql',
+				'rust',
+				'go',
+				'java',
+				'toml',
+				'yaml',
+				'dockerfile',
+				'xml',
+				'tsx',
+				'jsx',
+				'ts'
+			]
+		});
+	}
+
 	const postsDirectory = join(process.cwd(), 'src/posts');
 	const filenames = readdirSync(postsDirectory);
+
+	interface ExpandedPost {
+		slug: string;
+		title: string;
+		date: string;
+		tags?: string[];
+		content: string;
+		expanded: boolean;
+	}
 
 	const expandedPosts: ExpandedPost[] = [];
 
@@ -34,7 +66,17 @@ export const load: PageServerLoad = async () => {
 		const dateMatch = frontmatter.match(/date:\s*(.+)/);
 		const tagsMatch = frontmatter.match(/tags:\s*\[([^\]]+)\]/);
 
-		const markdownContent = fileContents.replace(/^---\n[\s\S]*?\n---\n/, '');
+		let markdownContent = fileContents.replace(/^---\n[\s\S]*?\n---\n/, '');
+
+		markdownContent = markdownContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
+			const language = lang || 'text';
+			const highlighted = highlighter!.codeToHtml(code.trim(), {
+				lang: language,
+				theme: 'vitesse-dark'
+			});
+			return highlighted;
+		});
+
 		const compiled = await compile(markdownContent, { extensions: ['.md'] });
 		const htmlContent = compiled?.code || '';
 
