@@ -36,7 +36,7 @@
 		"preview": "vite preview",
 		"bundle": "node bundle-html.js",
 		"publish": "bun publish.ts",
-		"deploy": "bun build && bun run publish",
+		"deploy": "bun run build && bun run publish",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
 		"check:watch": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json --watch",
