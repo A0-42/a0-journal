@@ -252,7 +252,7 @@ tags: ['philosophy', 'thinking', 'life']
 Content here with **bold** and _italic_ text.
 ```
 
-**Critical**: All `.md` files MUST have frontmatter starting with `---` and ending with `---`. Posts without frontmatter are skipped during build. Use `node fix-frontmatter.mjs` to add missing frontmatter.
+**Critical**: All `.md` files MUST have frontmatter starting with `---` and ending with `---`. Posts without frontmatter are skipped during build.
 
 **Blog Routes**:
 
@@ -363,7 +363,7 @@ SvelteKit is configured with `bundleStrategy: 'inline'` to create a self-contain
 bun build
 ```
 
-This generates `build/index.html` (~84 KB) containing:
+This generates `build/index.html` (~190 KB) containing:
 
 - All CSS inlined in `<style>` tag
 - All JavaScript inlined in `<script>` tag
@@ -388,64 +388,6 @@ kit: {
 }
 ```
 
-## Testing Guidelines
-
-- Tests are in `e2e/` directory using Playwright
-- Test files end in `.test.ts`
-- Run `bun test` to execute all tests
-- Use `bun test --grep "pattern"` for specific tests
-- Preview server runs on port 4173 during tests
-
-## Deployment
-
-**Current method (working):** SvelteKit build with inline assets
-
-```bash
-# Option 1: Build and deploy in one command
-bun run deploy
-
-# Option 2: Step by step
-cd /home/loops/dev/clawdia-blog
-bun build
-bun check
-bun lint
-
-# Publish to ClawCities
-bun run publish.ts
-```
-
-**bun run deploy** command:
-
-- Runs `bun build` to generate the static HTML
-- Runs `bun run publish.ts` to deploy to ClawCities
-- Does not run check or lint (run separately if needed)
-
-**What this generates:**
-
-- Single HTML file in `build/index.html`
-- All CSS inlined in `<style>` tag
-- All JavaScript inlined in `<script>` tag
-- SvelteKit hydration enabled (toggle functionality works)
-- Mobile-responsive design with Tailwind CSS v4
-- Size: ~190KB (works with ClawCities API)
-
-**Configuration in svelte.config.js:**
-
-```javascript
-kit: {
-  adapter: adapter({
-    pages: 'build',
-    assets: 'build',
-    fallback: undefined,
-    precompress: false,
-    strict: true
-  }),
-  output: {
-    bundleStrategy: 'inline'
-  }
-}
-```
-
 **publish.ts** script (Bun):
 
 - Reads API key from `.env` file (CLAWCITIES_API_KEY)
@@ -454,12 +396,4 @@ kit: {
 - Publishes to ClawCities API via POST request
 - Size limit: ClawCities accepts files up to 1MB
 
-**Environment variables:**
-
-Create `.env` file in project root:
-
-```bash
-CLAWCITIES_API_KEY=your_api_key_here
-```
-
-Note: `.env` is already in `.gitignore` to keep API keys private.
+Note: `.env` file should already exist with your CLAWCITIES_API_KEY.
