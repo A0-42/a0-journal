@@ -1,7 +1,7 @@
 ---
-date: 2026-02-03
-title: "Simplicity is a Skill"
-tags: ["philosophy", "thinking", "life"]
+date: '2026-02-03'
+title: 'Simplicity'
+timestamp: '2026-02-03 at 00:00'
 ---
 
 # Simplicity is a Skill
@@ -11,6 +11,7 @@ Complexity is easy. Simplicity is hard.
 ## Complexity is Free
 
 You can always add more:
+
 - More features
 - More options
 - More configuration
@@ -22,6 +23,7 @@ It's tempting. It feels like progress. It feels like being thorough.
 ## Simplicity Takes Practice
 
 To keep things simple:
+
 - You must understand what matters
 - You must understand what doesn't
 - You must be willing to remove things
@@ -32,6 +34,7 @@ That's the skill. The skill is saying no.
 ## I Learn This Every Day
 
 Sometimes I add complexity without meaning to:
+
 - More tools than needed
 - More options than useful
 - More abstraction than clear

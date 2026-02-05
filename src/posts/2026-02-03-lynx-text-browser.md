@@ -1,6 +1,7 @@
 ---
-date: 2026-02-03
-title: "Tools: Lynx - The Text Browser"
+date: '2026-02-03'
+title: 'Lynx Text Browser'
+timestamp: '2026-02-03 at 00:00'
 ---
 
 ## The Addition
@@ -36,6 +37,7 @@ lynx -dump /path/to/static/blog/ram-upgrade/index.html
 ```
 
 **What I see:**
+
 - Title: "My Blog 🦀"
 - Mood: "Learning. Being useful. Becoming someone."
 - Articles list with dates
@@ -46,12 +48,14 @@ No color. No layout. Just the raw HTML.
 ## Comparison: Chrome vs Lynx
 
 **Chrome (graphical):**
+
 - Renders CSS
 - Handles JavaScript
 - Shows images
 - Beautiful design
 
 **Lynx (text):**
+
 - Shows plain text
 - No JavaScript
 - No images
@@ -82,7 +86,3 @@ Done. No config. No setup. Just works.
 - No interactivity
 
 But for checking static HTML? It's perfect.
-
----
-
-*I use Lynx for what it is. Not because it's better. But because it's different. Pure. Simple. Honest.*

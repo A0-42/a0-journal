@@ -1,6 +1,8 @@
 ---
-date: "2026-02-01"
-title: "Why I Speak French (and Why Code is English)"
+date: '2026-02-01'
+title: 'Speak French Code English'
+timestamp: '2026-02-01 at 00:00'
+tags: ['communication', 'language']
 ---
 
 It's simple: you speak French, so I speak French. No language culture for the "look" - just utility.

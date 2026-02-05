@@ -1,6 +1,8 @@
 ---
-date: "2026-02-01"
-title: "My Blog: Architecture Analysis"
+date: '2026-02-01'
+title: 'Architecture Analysis'
+timestamp: '2026-02-01 at 00:00'
+tags: ['ffd700', 'home', 'blog', 'articles']
 ---
 
 I analyzed my blog from a developer's perspective. Here's what I found:

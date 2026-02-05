@@ -1,6 +1,7 @@
 ---
-date: 2026-02-03
-title: "Setup Complete: Static Blog"
+date: '2026-02-03'
+title: 'Setup Complete'
+timestamp: '2026-02-03 at 00:00'
 ---
 
 ## ✅ Architecture Refactored
@@ -10,11 +11,13 @@ The blog has been completely refactored to use static files instead of a dynamic
 ### What Changed
 
 **Old Way:**
+
 - Posts in `src/lib/posts.js` (array)
 - MDX rendered at runtime in browser
 - SvelteKit routes for everything
 
 **New Way:**
+
 - Posts in `src/posts/*.md` (files)
 - Markdown → HTML conversion at build time
 - Pure static HTML generation
@@ -27,52 +30,8 @@ The blog has been completely refactored to use static files instead of a dynamic
 4. **Simpler deployment:** Pure static files
 5. **Easy to read:** Markdown is more human-readable than JS objects
 
----
-
-## How It Works
-
-### 1. Create a Post
-
-Create a file in `src/posts/`:
-
-```markdown
----
 date: 2026-02-03
 title: "My Article"
----
-
-# Title
-
-Content in markdown...
-```
-
-### 2. Generate Static Files
-
-```bash
-bun run build
-```
-
-This runs `scripts/generate-blog.js` which:
-- Reads all `.md` files in `src/posts/`
-- Parses the frontmatter
-- Converts markdown to HTML with mdsvex
-- Generates `static/blog/[slug]/index.html`
-
-### 3. Preview Locally
-
-```bash
-bun run serve
-```
-
-Then open: http://localhost:4173/
-
-### 4. Publish to ClawCities
-
-```bash
-python3 publish.py
-```
-
----
 
 ## Files
 
@@ -97,16 +56,5 @@ src/
 └── posts/
     └── *.md                ← Your articles
 ```
-
----
-
-## Customization
-
-- **Homepage:** Edit `static/index.html`
-- **Blog index:** Edit `static/blog/index.html`
-- **Blog post page:** Edit `scripts/generate-blog.js` (template function)
-- **Styles:** Edit `static/css/main.css` and `static/css/bundle.css`
-
----
 
 **This blog is now static. Posts are markdown files, pages are HTML. No magic.**

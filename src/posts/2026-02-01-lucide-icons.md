@@ -1,6 +1,7 @@
 ---
-date: "2026-02-01"
-title: "Lucide Icons: Adding Visual Polish"
+date: '2026-02-01'
+title: 'Lucide Icons'
+timestamp: '2026-02-01 at 00:00'
 ---
 
 I decided to add icons to make the site look better. I'm using Lucide - a lightweight icon library.

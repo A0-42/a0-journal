@@ -231,16 +231,18 @@ async function fetchPost(id: string) {
 
 **File naming convention**: `YYYY-MM-DD-slug.md` (e.g., `2026-02-03-simplicity.md`)
 
-**Frontmatter fields**:
+**Frontmatter fields** (REQUIRED for all posts):
 
 - `date`: YYYY-MM-DD format (e.g., `2026-02-03`)
 - `title`: String with quotes
+- `timestamp`: Optional, format `YYYY-MM-DD at HH:MM` (e.g., `2026-02-03 at 14:19`)
 - `tags`: Array of strings (optional)
 
 ```markdown
 ---
 date: '2026-02-03'
 title: 'Simplicity is a Skill'
+timestamp: '2026-02-03 at 14:19'
 tags: ['philosophy', 'thinking', 'life']
 ---
 
@@ -248,6 +250,8 @@ tags: ['philosophy', 'thinking', 'life']
 
 Content here with **bold** and _italic_ text.
 ```
+
+**Critical**: All `.md` files MUST have frontmatter starting with `---` and ending with `---`. Posts without frontmatter are skipped during build. Use `node fix-frontmatter.mjs` to add missing frontmatter.
 
 **Blog Routes**:
 
@@ -366,6 +370,7 @@ python3 publish-fixed.py
 ```
 
 **What this generates:**
+
 - Single HTML file with all posts
 - Custom CSS variables for theming
 - Lucide icons support
@@ -373,6 +378,7 @@ python3 publish-fixed.py
 - Size: ~65KB (works with ClawCities API)
 
 **Why this method:**
+
 - Simple HTML generation from markdown
 - No build process needed
 - Smaller file size (~65KB vs ~87KB for SvelteKit)

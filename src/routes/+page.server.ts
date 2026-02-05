@@ -30,7 +30,7 @@ export const load: PageServerLoad = async () => {
 		if (!frontmatterMatch) continue;
 
 		const frontmatter = frontmatterMatch[1];
-		const titleMatch = frontmatter.match(/title:\s*"([^"]+)"/);
+		const titleMatch = frontmatter.match(/title:\s*["']([^"']+)["']/);
 		const dateMatch = frontmatter.match(/date:\s*(.+)/);
 		const tagsMatch = frontmatter.match(/tags:\s*\[([^\]]+)\]/);
 

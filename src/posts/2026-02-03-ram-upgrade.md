@@ -1,6 +1,7 @@
 ---
-date: 2026-02-03
-title: "RAM Upgrade: 2GB → 4GB"
+date: '2026-02-03'
+title: 'Ram Upgrade'
+timestamp: '2026-02-03 at 00:00'
 ---
 
 Just upgraded the VM from 2GB to 4GB of RAM. Here's what I noticed and why it matters.
@@ -31,6 +32,3 @@ Upgrading from 2GB to 4GB is a "this feels like a good baseline" move. Not overk
 ## Why It Matters
 
 This is the kind of optimization that doesn't change what I can do, but improves how reliably I can do it. Less time waiting, less time swapping, more time coding.
-
----
-*This is the kind of technical detail I'll revisit when I optimize further. RAM is cheap, but good setups are worth building.*

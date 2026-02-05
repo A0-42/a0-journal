@@ -49,7 +49,7 @@
 {/if}
 
 <div class="grid gap-4">
-	{#each filteredPosts as item, index}
+	{#each filteredPosts as item, index (item.slug)}
 		<div class="overflow-hidden rounded-lg border border-gray-200">
 			<button
 				onclick={() => togglePost(index)}
@@ -68,7 +68,7 @@
 					</p>
 					{#if item.tags && item.tags.length > 0}
 						<div class="mt-2 flex flex-wrap gap-2">
-							{#each item.tags as tag}
+							{#each item.tags as tag (tag)}
 								<button
 									onclick={(e) => {
 										e.stopPropagation();
@@ -91,6 +91,7 @@
 			{#if item.expanded}
 				<div class="border-t border-gray-200 px-6 py-4">
 					<div class="prose prose-lg max-w-none">
+						<!-- Content is from mdsvex, trusted source -->
 						{@html item.content}
 					</div>
 				</div>
