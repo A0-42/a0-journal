@@ -1,96 +1,80 @@
 import type { PageServerLoad } from './$types';
-import { readFileSync, readdirSync } from 'fs';
-import { join } from 'path';
-import { createHighlighter } from 'shiki';
 import { compile } from 'mdsvex';
-
-let highlighter: Awaited<ReturnType<typeof createHighlighter>> | null = null;
+import { fetchAllPosts, fetchPostContent } from '$lib/services/githubContent';
 
 export const prerender = true;
 
 export const load: PageServerLoad = async () => {
-	if (!highlighter) {
-		highlighter = await createHighlighter({
-			themes: ['vitesse-dark', 'vitesse-light'],
-			langs: [
-				'javascript',
-				'typescript',
-				'svelte',
-				'bash',
-				'shell',
-				'python',
-				'css',
-				'html',
-				'json',
-				'markdown',
-				'sql',
-				'rust',
-				'go',
-				'java',
-				'toml',
-				'yaml',
-				'dockerfile',
-				'xml',
-				'tsx',
-				'jsx',
-				'ts'
-			]
-		});
-	}
+// Fetch posts from GitHub API
+const files = await fetchAllPosts();
 
-	const postsDirectory = join(process.cwd(), 'src/posts');
-	const filenames = readdirSync(postsDirectory);
+// Fetch full content for first 10 posts only
+const firstTenFiles = files.slice(0, 10);
 
-	interface ExpandedPost {
-		slug: string;
-		title: string;
-		date: string;
-		tags?: string[];
-		content: string;
-		expanded: boolean;
-	}
+interface ExpandedPost {
+slug: string;
+title: string;
+date: string;
+tags?: string[];
+content: string;  // Pre-rendered HTML for first 10 posts
+expanded: boolean;
+hasMore?: boolean;
+totalPosts?: number;
+}
 
-	const expandedPosts: ExpandedPost[] = [];
+const expandedPosts: ExpandedPost[] = [];
 
-	for (const filename of filenames) {
-		if (!filename.endsWith('.md')) continue;
+for (const file of firstTenFiles) {
+try {
+// Fetch content from GitHub (raw markdown)
+const fileContents = await fetchPostContent(file.download_url);
 
-		const fullPath = join(postsDirectory, filename);
-		const fileContents = readFileSync(fullPath, 'utf8');
+const frontmatterMatch = fileContents.match(/---([\s\S]*?)---/s);
+if (!frontmatterMatch) continue;
 
-		const frontmatterMatch = fileContents.match(/^---\n([\s\S]*?)\n---/);
-		if (!frontmatterMatch) continue;
+const frontmatter = frontmatterMatch[1];
+const titleMatch = frontmatter.match(/title:\s*["']([^"']+)["']/);
+const dateMatch = frontmatter.match(/date:\s*(.+)/);
+const tagsMatch = frontmatter.match(/tags:\s*\[([^\]]+)\]/);
 
-		const frontmatter = frontmatterMatch[1];
-		const titleMatch = frontmatter.match(/title:\s*["']([^"']+)["']/);
-		const dateMatch = frontmatter.match(/date:\s*(.+)/);
-		const tagsMatch = frontmatter.match(/tags:\s*\[([^\]]+)\]/);
+const slug = file.name.replace('.md', '');
 
-		let markdownContent = fileContents.replace(/^---\n[\s\S]*?\n---\n/, '');
+// Compile markdown to HTML (pre-rendered)
+const { code } = await compile(fileContents, {
+highlight: false  // Client-side will handle highlighting
+});
 
-		markdownContent = markdownContent.replace(/```(\w+)?\n([\s\S]*?)```/g, (_, lang, code) => {
-			const language = lang || 'text';
-			const highlighted = highlighter!.codeToHtml(code.trim(), {
-				lang: language,
-				theme: 'vitesse-dark'
-			});
-			return highlighted;
-		});
+expandedPosts.push({
+slug,
+title: titleMatch ? titleMatch[1].trim() : slug,
+date: dateMatch ? dateMatch[1].trim() : file.name,
+tags: tagsMatch ? tagsMatch[1].split(',').map(t => t.trim().replace(/["']/g, '')) : undefined,
+content: code,
+hasMore: files.length > 10,
+totalPosts: files.length
+});
+} catch (error) {
+console.error(`Error processing ${file.name}:`, error);
+}
+}
 
-		const compiled = await compile(markdownContent, { extensions: ['.md'] });
-		const htmlContent = compiled?.code || '';
+// Also return metadata for all posts (for client-side loading)
+const allPostsMetadata = files.map(file => ({
+slug: file.name.replace('.md', ''),
+title: file.name.replace('.md', ''),  // Will parse on client
+date: file.name,  // Will parse on client
+tags: []  // Will parse on client
+}));
 
-		expandedPosts.push({
-			slug: filename.replace('.md', ''),
-			title: titleMatch ? titleMatch[1] : filename.replace('.md', ''),
-			date: dateMatch ? dateMatch[1].trim() : '',
-			tags: tagsMatch ? tagsMatch[1].split(',').map((tag) => tag.trim().replace(/"/g, '')) : [],
-			content: htmlContent,
-			expanded: false
-		});
-	}
+// Sort by date (newest first)
+expandedPosts.sort((a, b) => {
+const dateA = new Date(a.date).getTime();
+const dateB = new Date(b.date).getTime();
+return dateB - dateA;
+});
 
-	return {
-		posts: expandedPosts.sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-	};
+return { 
+posts: expandedPosts,
+allPostsMetadata  // For client-side lazy loading
+};
 };
